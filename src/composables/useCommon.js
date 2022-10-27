@@ -1,5 +1,6 @@
 import { computed,reactive, ref } from "vue";
 import { toast } from '~/composables/util';
+import {deleteSkus} from "~/api/skus";
 
 
 export const useInitTable = (opt = {}) => {
@@ -61,6 +62,25 @@ export const useInitTable = (opt = {}) => {
       row.statusLoading = false
     })
   }
+  const tableRef = ref(null)
+  const selectIds = ref([])
+
+  function handleMultiDelete() {
+    loading.value = true
+    opt.delete(selectIds.value).then(res => {
+      toast("delete success")
+      if (tableRef.value) {
+        tableRef.value.clearSelection()
+      }
+      getData()
+    }).finally(() => {
+      loading.value = false
+    })
+  }
+
+  function handleSelectionChange(e) {
+    selectIds.value = e.map(o => o.id);
+  }
   return {
     searchForm,
     resetSearchForm,
@@ -71,7 +91,10 @@ export const useInitTable = (opt = {}) => {
     limit,
     getData,
     handleDelete,
-    handleUpdateStatus
+    handleUpdateStatus,
+    tableRef,
+    handleSelectionChange,
+    handleMultiDelete
   };
 };
 
@@ -95,7 +118,7 @@ export function useInitForm(opt = {}) {
 
   const editId = ref(0);
   const drawerTitle = computed(() =>
-    editId.value ? "Update Manager" : "Create Manager"
+    editId.value ? "Update " : "Create "
   );
   function handleEdit(row) {
     editId.value = row.id;
