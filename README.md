@@ -8,4 +8,5 @@ npm install element-plus --save
 npm i -D vite-plugin-windicss windicss
 npm install vue-router@4
 ```
-
+## vscode extension
+volar,Vue 3 Snippets
