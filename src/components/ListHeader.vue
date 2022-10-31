@@ -8,11 +8,12 @@
 					</el-button>
 				</template>
 			</el-popconfirm>
+			<slot />
 		</div>
 		<el-tooltip v-if="btns.includes('refresh')" effect="dark" content="Refresh data" placement="top">
 			<el-button text @click="$emit('refresh')">
 				<el-icon>
-					<Refresh/>
+					<Refresh />
 				</el-icon>
 			</el-button>
 		</el-tooltip>
@@ -25,15 +26,15 @@ export default {
 }
 </script>
 <script setup>
-import {computed} from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
 	layout: {
 		type: String,
-		default: "create,delete"
+		default: "create,refresh"
 	}
 })
-const btns = computed(()=>props.layout.split(","))
+const btns = computed(() => props.layout.split(","))
 defineEmits(["create", "refresh", "delete"])
 </script>
 

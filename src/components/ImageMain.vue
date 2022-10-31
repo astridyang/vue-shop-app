@@ -48,10 +48,14 @@ import { computed, ref } from "vue";
 import { showPrompt, toast } from '~/composables/util';
 import UploadFile from './UploadFile.vue';
 
-defineProps({
+const props = defineProps({
 	openChoose:{
 		type:Boolean,
 		default: false
+	},
+	limit:{
+		type:Number,
+		default:1
 	}
 })
 
@@ -116,9 +120,9 @@ function handleSuccess() {
 const emits = defineEmits(["choose"])
 const checkedImage = computed(() => list.value.filter(item => item.checked))
 function handleChoose(item) {
-	if (item.checked && checkedImage.value.length > 1) {
+	if (item.checked && checkedImage.value.length > props.limit) {
 		item.checked = false
-		toast("You can only choose 1 image", "error")
+		toast(`You can only choose ${props.limit} image(s)`, "error")
 		return
 	}
 	emits("choose", checkedImage.value)

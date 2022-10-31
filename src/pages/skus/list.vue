@@ -64,7 +64,6 @@ import {useInitTable, useInitForm} from '~/composables/useCommon'
 import {ref} from "vue";
 import {toast} from "~/composables/util";
 import TagInput from "~/components/TagInput.vue";
-
 const {
 	tableData,
 	loading,

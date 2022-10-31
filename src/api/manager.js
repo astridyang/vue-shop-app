@@ -1,5 +1,5 @@
 import axios from "~/axios";
-
+import {queryFormat} from "~/composables/util"
 export function login(username, password) {
   return axios.post("/admin/login", {
     username,
@@ -20,16 +20,7 @@ export function updatePassword(data) {
 }
 
 export function getManagerList(page = 1, query) {
-  let q = [];
-  for (const key in query) {
-    if (query[key]) {
-      q.push(`${key}=${encodeURIComponent(query[key])}`);
-    }
-  }
-  let str = q.join("&");
-  if (str.length > 0) {
-    str = "?" + str;
-  }
+  const str = queryFormat(query);
   return axios.get(`/admin/manager/${page}${str}`);
 }
 
@@ -37,12 +28,12 @@ export function updateStatus(id, status) {
   return axios.post(`/admin/manager/${id}/update_status`, { status });
 }
 
-export function createManger(data) {
+export function createManager(data) {
   return axios.post(`/admin/manager`, data);
 }
-export function updateManger(id, data) {
+export function updateManager(id, data) {
   return axios.post(`/admin/manager/${id}`, data);
 }
-export function deleteManger(id) {
+export function deleteManager(id) {
   return axios.post(`/admin/manager/${id}/delete`);
 }

@@ -99,7 +99,7 @@ import { ref } from 'vue';
 import FormDrawer from '~/components/FormDrawer.vue';
 import ChooseImage from '~/components/ChooseImage.vue';
 import ListHeader from '~/components/ListHeader.vue';
-import { getManagerList, updateStatus, createManger, updateManger, deleteManger } from '~/api/manager';
+import { getManagerList, updateStatus, createManager, updateManager, deleteManager } from '~/api/manager';
 import { useInitTable, useInitForm } from '~/composables/useCommon'
 const roles = ref([])
 const { searchForm,
@@ -142,9 +142,9 @@ const { formDrawerRef,
     },
     getData,
     currentPage,
-    update: updateManger,
-    create: createManger,
-    delete: deleteManger,
+    update: updateManager,
+    create: createManager,
+    delete: deleteManager,
     updateStatus
   })
 

@@ -1,7 +1,6 @@
-import { computed,reactive, ref } from "vue";
-import { toast } from '~/composables/util';
-import {deleteSkus} from "~/api/skus";
-
+import { computed, reactive, ref } from "vue";
+import { toast } from "~/composables/util";
+import { deleteSkus } from "~/api/skus";
 
 export const useInitTable = (opt = {}) => {
   let searchForm = null;
@@ -45,41 +44,67 @@ export const useInitTable = (opt = {}) => {
   }
   getData();
   function handleDelete(id) {
-    loading.value = true
-    opt.delete(id).then(res => {
-      toast("delete success")
-      getData()
-    }).finally(() => {
-      loading.value = false
-    })
+    loading.value = true;
+    opt
+      .delete(id)
+      .then((res) => {
+        toast("delete success");
+        getData();
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
-  
+
   function handleUpdateStatus(status, row) {
-    row.statusLoading = true
-    opt.updateStatus(row.id, status).then(res => {
-      row.status = status
-    }).finally(() => {
-      row.statusLoading = false
-    })
+    row.statusLoading = true;
+    opt
+      .updateStatus(row.id, status)
+      .then((res) => {
+        row.status = status;
+      })
+      .finally(() => {
+        row.statusLoading = false;
+      });
   }
-  const tableRef = ref(null)
-  const selectIds = ref([])
+  const tableRef = ref(null);
+  const selectIds = ref([]);
 
   function handleMultiDelete() {
-    loading.value = true
-    opt.delete(selectIds.value).then(res => {
-      toast("delete success")
-      if (tableRef.value) {
-        tableRef.value.clearSelection()
-      }
-      getData()
-    }).finally(() => {
-      loading.value = false
-    })
+    loading.value = true;
+    opt
+      .delete(selectIds.value)
+      .then((res) => {
+        toast("delete success");
+        if (tableRef.value) {
+          tableRef.value.clearSelection();
+        }
+        getData();
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
+	
+  function handleMultiUpdateStatus(status){
+    loading.value = true;
+    opt
+      .updateStatus(selectIds.value, status)
+      .then((res) => {
+        toast("update status success");
+        if (tableRef.value) {
+          tableRef.value.clearSelection();
+        }
+        getData();
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
 
   function handleSelectionChange(e) {
-    selectIds.value = e.map(o => o.id);
+    selectIds.value = e.map((o) => o.id);
   }
   return {
     searchForm,
@@ -94,20 +119,21 @@ export const useInitTable = (opt = {}) => {
     handleUpdateStatus,
     tableRef,
     handleSelectionChange,
-    handleMultiDelete
+    handleMultiDelete,
+    handleMultiUpdateStatus
   };
 };
 
 export function useInitForm(opt = {}) {
   const formDrawerRef = ref(null);
   const formRef = ref(null);
-  const defaultForm = opt.form
+  const defaultForm = opt.form;
   const form = reactive({});
 
   const rules = opt.rules || {};
   function resetForm(row) {
     if (formRef.value) formRef.value.clearValidate();
-    for (let key in row) {
+    for (let key in defaultForm) {
       form[key] = row[key];
     }
   }
@@ -117,21 +143,26 @@ export function useInitForm(opt = {}) {
   }
 
   const editId = ref(0);
-  const drawerTitle = computed(() =>
-    editId.value ? "Update " : "Create "
-  );
+  const drawerTitle = computed(() => (editId.value ? "Update " : "Create "));
   function handleEdit(row) {
     editId.value = row.id;
     resetForm(row);
     formDrawerRef.value.open();
   }
+
   function handleSubmit() {
+    let body = {};
+    if (opt.onBeforeSubmit && typeof opt.onBeforeSubmit === "function") {
+      body = opt.onBeforeSubmit(form);
+    } else {
+      body = form;
+    }
     formRef.value.validate((valid) => {
       if (!valid) return;
       formDrawerRef.value.showLoading();
       const fun = editId.value
-        ? opt.update(editId.value, form)
-        : opt.create(form);
+        ? opt.update(editId.value, body)
+        : opt.create(body);
       fun
         .then((res) => {
           toast(drawerTitle.value + " success.");

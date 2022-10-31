@@ -35,3 +35,17 @@ export function showPrompt(tip, value = "") {
     inputValue: value,
   });
 }
+
+export function queryFormat(query){
+  let q = [];
+  for (const key in query) {
+    if (query[key]) {
+      q.push(`${key}=${encodeURIComponent(query[key])}`);
+    }
+  }
+  let str = q.join("&");
+  if (str.length > 0) {
+    str = "?" + str;
+  }
+  return str;
+}
