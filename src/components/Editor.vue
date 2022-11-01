@@ -1,5 +1,6 @@
 <template>
 	<editor v-model="content" tag-name="div" :init="init"/>
+	<ChooseImage :limit="9" ref="chooseImageRef" :preview="false"/>
 </template>
 <script>
 export default {
@@ -55,7 +56,9 @@ const props = defineProps({
 })
 const emits = defineEmits(["update:modelValue"])
 import {ref, watch} from "vue";
+import ChooseImage from "~/components/ChooseImage.vue";
 
+const chooseImageRef = ref(null)
 const init = {
 	skin_url: "/tinymce/skins/ui/oxide",
 	content_css: "/tinymce/skins/content/default/content.min.css",
@@ -64,16 +67,29 @@ const init = {
 	max_height: 500,
 	min_height: 450,
 	toolbar_mode: "none",
-	// noneditable toc print textpattern hr
-	plugins: 'advlist anchor autolink code codesample  directionality fullscreen insertdatetime link lists nonbreaking  pagebreak paste preview save searchreplace tabfocus  template  visualblocks visualchars wordcount table image ',
-	toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | toc alignleft aligncenter alignright alignjustify lineheight | outdent indent | numlist bullist | forecolor backcolor | pagebreak | charmap emoticons | fullscreen preview save print | hr link image | anchor pagebreak | insertdatetime | blockquote removeformat subscript superscript code codesample | searchreplace',
+	// noneditable toc print textpattern hr paste tabfocus
+	plugins: 'advlist anchor autolink code codesample  directionality fullscreen insertdatetime link lists nonbreaking  pagebreak  preview save searchreplace   template  visualblocks visualchars wordcount table image ',
+	toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | toc alignleft aligncenter alignright alignjustify lineheight | outdent indent | numlist bullist | forecolor backcolor | pagebreak | charmap emoticons | fullscreen preview save print | hr link imageUpload | anchor pagebreak | insertdatetime | blockquote removeformat subscript superscript code codesample | searchreplace',
 	content_style: "p {margin: 5px 0;font-size:14px}",
 	font_size_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
 	font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif,Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats',
 	branding: false,
 	elementpath: false,
 	resize: false,
-	statusbar: false
+	statusbar: false,
+	setup: (editor) => {
+		editor.ui.registry.addButton("imageUpload", {
+			tooltip: "insert image",
+			icon: "image",
+			onAction() {
+				chooseImageRef.value.open((data) => {
+					data.forEach(url=>{
+						editor.insertContent(`<img src=${url} style="width:100%" />`)
+					})
+				})
+			}
+		})
+	}
 }
 tinymce.init;
 const content = ref(props.modelValue)

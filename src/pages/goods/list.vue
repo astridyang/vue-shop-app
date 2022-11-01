@@ -68,7 +68,9 @@
 					<template #default="scope">
 						<div v-if="searchForm.tab !== 'delete'">
 							<el-button size="small" class="px-1" type="primary" @click="handleEdit(scope.row)" text>Edit</el-button>
-							<el-button size="small" class="px-1" type="primary" text>Sku</el-button>
+							<el-button size="small" class="px-1" type="primary" text @click="handleSetSkus(scope.row)"
+							           :loading="scope.row.skusLoading">Sku
+							</el-button>
 							<el-button size="small" class="px-1" :type="scope.row.goods_banner.length?'primary':'danger'" text
 							           @click="handleSetBanners(scope.row)" :loading="scope.row.bannerLoading">SetBanners
 							</el-button>
@@ -152,6 +154,7 @@
 		</el-card>
 		<goods-banners ref="bannerRef" @reload-data="getData"/>
 		<content ref="contentRef" @reload-data="getData"/>
+		<skus ref="skusRef" @reload-data="getData"/>
 	</div>
 </template>
 
@@ -171,6 +174,7 @@ import {getCategoryList} from '~/api/category'
 import {useInitTable, useInitForm} from '~/composables/useCommon'
 import goodsBanners from "~/pages/goods/goodsBanners.vue";
 import content from "~/pages/goods/content.vue";
+import skus from "~/pages/goods/skus.vue";
 
 const {
 	searchForm,
@@ -198,6 +202,7 @@ const {
 		tableData.value = res.list.map((item) => {
 			item.bannerLoading = false;
 			item.contentLoading = false;
+			item.skusLoading = false;
 			return item;
 		});
 
@@ -270,6 +275,10 @@ const handleSetBanners = (row) => {
 const contentRef = ref(null)
 const handleSetContent = (row) => {
 	contentRef.value.open(row)
+}
+const skusRef = ref(null)
+const handleSetSkus = (row) => {
+	skusRef.value.open(row)
 }
 </script>
 

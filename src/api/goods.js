@@ -26,3 +26,15 @@ export function readGoods(id) {
 export function setBanners(id, data) {
   return axios.post(`/admin/goods/banners/${id}`, data);
 }
+export function updateskus(id, data) {
+  return axios.post(`/admin/goods/updateskus/${id}`, data);
+}
+export function createGoodsSkuCard(data) {
+  return axios.post(`/admin/goods_skus_card`, data);
+}
+export function updateskusCard(id, data) {
+  return axios.post(`/admin/goods_skus_card/${id}`, data);
+}
+export function deleteSkuCard(id) {
+  return axios.post(`/admin/goods_skus_card/${id}/delete`);
+}
