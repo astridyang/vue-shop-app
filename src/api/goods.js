@@ -38,3 +38,18 @@ export function updateskusCard(id, data) {
 export function deleteSkuCard(id) {
   return axios.post(`/admin/goods_skus_card/${id}/delete`);
 }
+export function sortGoodsSkuCard(data) {
+  return axios.post(`/admin/goods_skus_card/sort`, data);
+}
+export function createGoodsSkuCardValue(data) {
+  return axios.post(`/admin/goods_skus_card_value`, data);
+}
+export function updateskusCardValue(id, data) {
+  return axios.post(`/admin/goods_skus_card_value/${id}`, data);
+}
+export function deleteSkuCardValue(id) {
+  return axios.post(`/admin/goods_skus_card_value/${id}/delete`);
+}
+export function setGoodsSkusCard(id, data) {
+  return axios.post(`/admin/goods_skus_card/${id}/set`, data);
+}
