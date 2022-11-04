@@ -69,9 +69,9 @@
 </template>
 
 <script>
-// export default {
-// 	name: 'AccessList'
-// }
+export default {
+	name: 'AccessList'
+}
 </script>
 <script setup>
 import {ref} from 'vue';

@@ -20,6 +20,12 @@ export function updateGoods(id, data) {
 export function deleteGoods(ids) {
   return axios.post(`/admin/goods/delete_all`, { ids });
 }
+export function restoreGoods(ids) {
+  return axios.post(`/admin/goods/restore`, { ids });
+}
+export function destroyGoods(ids) {
+  return axios.post(`/admin/goods/destroy`, { ids });
+}
 export function readGoods(id) {
   return axios.get(`/admin/goods/read/${id}`);
 }

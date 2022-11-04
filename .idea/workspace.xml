@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fa4929c-ef39-4571-9d87-39fe00414cf0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/ChooseSku.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ChooseGoods.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SkuTable.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/category/components/CategoryGoods.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/category.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/category.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/goods.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/goods.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/useCommon.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/useCommon.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/composables/useSku.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/useSku.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/composables/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/goods/components/SkuCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goods/components/SkuCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/goods/components/SkuCardItem.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goods/components/SkuCardItem.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/access/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/access/list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/category/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/category/list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/goods/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goods/list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/goods/skus.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goods/skus.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +30,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="2GHtqDSXn4vQgxhkkgGnSfSPBbh" />
   <component name="ProjectLevelVcsManager">
@@ -72,7 +86,8 @@
       <workItem from="1667262820760" duration="4006000" />
       <workItem from="1667268628592" duration="284000" />
       <workItem from="1667269183560" duration="4942000" />
-      <workItem from="1667455856249" duration="11905000" />
+      <workItem from="1667455856249" duration="12465000" />
+      <workItem from="1667522944277" duration="22051000" />
     </task>
     <servers />
   </component>

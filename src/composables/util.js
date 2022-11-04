@@ -64,3 +64,49 @@ function swap(array, index1, index2) {
     array[index1] = array.splice(index2, 1, array[index1])[0]
     return array
 }
+
+// sku组合算法
+export function cartesianProductOf() {
+    return Array.prototype.reduce.call(arguments, function (a, b) {
+        let ret = []
+        a.forEach(function (a) {
+            b.forEach(function (b) {
+                ret.push(a.concat([b]))
+            })
+        })
+        return ret;
+    }, [
+        []
+    ])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

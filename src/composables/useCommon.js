@@ -61,6 +61,7 @@ export const useInitTable = (opt = {}) => {
     opt
       .updateStatus(row.id, status)
       .then((res) => {
+        toast("update status success")
         row.status = status;
       })
       .finally(() => {
@@ -120,7 +121,8 @@ export const useInitTable = (opt = {}) => {
     tableRef,
     handleSelectionChange,
     handleMultiDelete,
-    handleMultiUpdateStatus
+    handleMultiUpdateStatus,
+    selectIds
   };
 };
 

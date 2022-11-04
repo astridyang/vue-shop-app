@@ -36,6 +36,7 @@
 			</template>
 			<template v-else>
 				<SkuCard/>
+				<SkuTable/>
 			</template>
 		</el-form>
 	</FormDrawer>
@@ -53,7 +54,8 @@ import FormDrawer from "~/components/FormDrawer.vue";
 import {readGoods, updateskus} from '~/api/goods';
 import {toast} from '~/composables/util';
 import SkuCard from "~/pages/goods/components/SkuCard.vue";
-import {goodsId,initSkuCardList} from "~/composables/useSku";
+import SkuTable from "~/components/SkuTable.vue";
+import {goodsId, initSkuCardList, skuList} from "~/composables/useSku";
 
 const formDrawerRef = ref(null)
 const form = reactive({
@@ -89,7 +91,14 @@ const open = (row) => {
 const emits = defineEmits(["reloadData"])
 const onSubmit = () => {
 	formDrawerRef.value.showLoading()
-	updateskus(goodsId.value, form).then(res => {
+	let data = {
+		sku_type: form.sku_type,
+		sku_value: form.sku_value
+	}
+	if (form.sku_type === 1) {
+		data.goodsSkus = skuList.value
+	}
+	updateskus(goodsId.value, data).then(res => {
 		toast("set skus success")
 		emits("reloadData")
 		formDrawerRef.value.close()

@@ -15,7 +15,20 @@
 				</el-form-item>
 			</el-form>
 
-			<ListHeader @create="handleCreate" @refresh="getData" @delete="handleMultiDelete" layout="create,delete,refresh">
+			<ListHeader @create="handleCreate" @refresh="getData" layout="create,refresh">
+				<el-button size="small" @click="handleMultiDelete"
+				           v-if="searchForm.tab !== 'delete'">Multi delete
+				</el-button>
+				<el-button size="small" type="warning" @click="handleRestoreGoods"
+				           v-if="searchForm.tab === 'delete'">Multi Restore
+				</el-button>
+				<el-popconfirm v-if="searchForm.tab === 'delete'" title="Are you sure to delete this?"
+				               @confirm="handleMultiDestroy">
+					<template #reference>
+						<el-button size="small" type="danger">Multi Destroy
+						</el-button>
+					</template>
+				</el-popconfirm>
 				<el-button size="small" @click="handleMultiUpdateStatus(1)"
 				           v-if="searchForm.tab === 'all' || searchForm.tab === 'off'">上架
 				</el-button>
@@ -68,7 +81,10 @@
 					<template #default="scope">
 						<div v-if="searchForm.tab !== 'delete'">
 							<el-button size="small" class="px-1" type="primary" @click="handleEdit(scope.row)" text>Edit</el-button>
-							<el-button size="small" class="px-1" type="primary" text @click="handleSetSkus(scope.row)"
+							<el-button size="small" class="px-1"
+							           :type="(scope.row.sku_type===0&&!scope.row.sku_value)||(scope.row.sku_type===1&&!scope.row.goods_skus
+.length)?'danger':'primary'" text
+							           @click="handleSetSkus(scope.row)"
 							           :loading="scope.row.skusLoading">Sku
 							</el-button>
 							<el-button size="small" class="px-1" :type="scope.row.goods_banner.length?'primary':'danger'" text
@@ -77,7 +93,7 @@
 							<el-button size="small" class="px-1" :type="scope.row.content?'primary':'danger'" text
 							           @click="handleSetContent(scope.row)">Detail
 							</el-button>
-							<el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete(scope.row.id)">
+							<el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete([scope.row.id])">
 								<template #reference>
 									<el-button size="small" text type="danger">Delete
 									</el-button>
@@ -169,12 +185,21 @@ import {ref} from 'vue';
 import FormDrawer from '~/components/FormDrawer.vue';
 import ChooseImage from '~/components/ChooseImage.vue';
 import ListHeader from '~/components/ListHeader.vue';
-import {getGoodsList, updateStatus, createGoods, updateGoods, deleteGoods} from '~/api/goods';
+import {
+	getGoodsList,
+	updateStatus,
+	createGoods,
+	updateGoods,
+	deleteGoods,
+	restoreGoods,
+	destroyGoods
+} from '~/api/goods';
 import {getCategoryList} from '~/api/category'
 import {useInitTable, useInitForm} from '~/composables/useCommon'
 import goodsBanners from "~/pages/goods/goodsBanners.vue";
 import content from "~/pages/goods/content.vue";
 import skus from "~/pages/goods/skus.vue";
+import {toast} from "~/composables/util";
 
 const {
 	searchForm,
@@ -188,7 +213,9 @@ const {
 	handleDelete,
 	handleSelectionChange,
 	handleMultiDelete,
-	handleMultiUpdateStatus
+	handleMultiUpdateStatus,
+	selectIds,
+	tableRef
 } = useInitTable({
 	searchForm: {
 		title: "",
@@ -197,6 +224,7 @@ const {
 	},
 	getList: getGoodsList,
 	updateStatus: updateStatus,
+	delete: deleteGoods,
 	onGetListSuccess(res) {
 		total.value = res.totalCount;
 		tableData.value = res.list.map((item) => {
@@ -280,6 +308,22 @@ const skusRef = ref(null)
 const handleSetSkus = (row) => {
 	skusRef.value.open(row)
 }
+const handleRestoreGoods = () => handleMultiAction(restoreGoods, "Restore");
+const handleMultiDestroy = () => handleMultiAction(destroyGoods, "Destroy");
+
+function handleMultiAction(func, msg) {
+	loading.value = true
+	func(selectIds.value).then(res => {
+		toast(msg + " success")
+		if (tableRef.value) {
+			tableRef.value.clearSelection()
+		}
+		getData();
+	}).finally(() => {
+		loading.value = false
+	})
+}
+
 </script>
 
 <style scoped lang='scss'>
