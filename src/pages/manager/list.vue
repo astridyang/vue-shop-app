@@ -1,17 +1,13 @@
 <template>
   <el-card shadow="never">
-    <el-form class="flex" :model="searchForm" label-width="80px" :inline="false" size="small">
-      <el-form-item label="keyword">
-        <el-input v-model="searchForm.keyword" clearable></el-input>
-      </el-form-item>
-      <el-form-item class="ml-auto">
-        <el-button type="primary" @click="getData">Search</el-button>
-        <el-button @click="resetSearchForm">Reset</el-button>
-      </el-form-item>
-    </el-form>
+    <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
+      <SearchItem label="Username">
+        <el-input v-model="searchForm.keyword" clearable class="w-[150px]"></el-input>
+      </SearchItem>
+    </Search>
 
-    <ListHeader @create="handleCreate" @refresh="getData"/>
-    
+    <ListHeader @create="handleCreate" @refresh="getData" />
+
     <el-table :data="tableData" stripe style="width: 100%" v-loading="loading" l>
       <el-table-column label="Manager" width="200">
         <template #default="{ row }">
@@ -99,6 +95,8 @@ import { ref } from 'vue';
 import FormDrawer from '~/components/FormDrawer.vue';
 import ChooseImage from '~/components/ChooseImage.vue';
 import ListHeader from '~/components/ListHeader.vue';
+import Search from '~/components/Search.vue';
+import SearchItem from '~/components/SearchItem.vue';
 import { getManagerList, updateStatus, createManager, updateManager, deleteManager } from '~/api/manager';
 import { useInitTable, useInitForm } from '~/composables/useCommon'
 const roles = ref([])
@@ -109,22 +107,22 @@ const { searchForm,
   currentPage,
   total,
   limit,
-  getData, 
+  getData,
   handleDelete
 } = useInitTable({
-    searchForm: {
-      keyword: ""
-    },
-    getList: getManagerList,
-    onGetListSuccess(res) {
-      total.value = res.totalCount;
-      tableData.value = res.list.map((item) => {
-        item.statusLoading = false;
-        return item;
-      });
-      roles.value = res.roles;
-    }
-  })
+  searchForm: {
+    keyword: ""
+  },
+  getList: getManagerList,
+  onGetListSuccess(res) {
+    total.value = res.totalCount;
+    tableData.value = res.list.map((item) => {
+      item.statusLoading = false;
+      return item;
+    });
+    roles.value = res.roles;
+  }
+})
 const { formDrawerRef,
   formRef,
   form,

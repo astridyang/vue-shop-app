@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center justify-between mb-4">
+	<div class="flex items-center mb-4">
 		<div>
 			<el-button v-if="btns.includes('create')" type="primary" size="small" @click="$emit('create')">New</el-button>
 			<el-popconfirm v-if="btns.includes('delete')" title="Are you sure to delete this?" @confirm="$emit('delete')">
@@ -10,13 +10,20 @@
 			</el-popconfirm>
 			<slot />
 		</div>
-		<el-tooltip v-if="btns.includes('refresh')" effect="dark" content="Refresh data" placement="top">
+		<div class="ml-auto">
+			<el-tooltip v-if="btns.includes('refresh')" effect="dark" content="Refresh data" placement="top">
 			<el-button text @click="$emit('refresh')">
 				<el-icon>
 					<Refresh />
 				</el-icon>
 			</el-button>
 		</el-tooltip>
+		<el-tooltip v-if="btns.includes('download')" effect="dark" content="download data" placement="top">
+			<el-button text @click="$emit('download')">
+				<el-icon><Download /></el-icon>
+			</el-button>
+		</el-tooltip>
+		</div>
 	</div>
 </template>
 
@@ -35,7 +42,7 @@ const props = defineProps({
 	}
 })
 const btns = computed(() => props.layout.split(","))
-defineEmits(["create", "refresh", "delete"])
+defineEmits(["create", "refresh", "delete", "download"])
 </script>
 
 <style scoped lang='scss'>

@@ -153,6 +153,7 @@ export function useInitForm(opt = {}) {
   }
 
   function handleSubmit() {
+    console.log('edit id: ', editId.value);
     let body = {};
     if (opt.onBeforeSubmit && typeof opt.onBeforeSubmit === "function") {
       body = opt.onBeforeSubmit(form);
@@ -160,6 +161,7 @@ export function useInitForm(opt = {}) {
       body = form;
     }
     formRef.value.validate((valid) => {
+      
       if (!valid) return;
       formDrawerRef.value.showLoading();
       const fun = editId.value

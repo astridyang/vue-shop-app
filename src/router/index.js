@@ -16,6 +16,7 @@ import ManagerList from "~/pages/manager/list.vue";
 import AccessList from "~/pages/access/list.vue";
 import RoleList from "~/pages/role/list.vue";
 import SkusList from "~/pages/skus/list.vue";
+import LevelList from "~/pages/level/list.vue";
 
 const routes = [
   {
@@ -143,6 +144,14 @@ const asyncRoutes = [
     component: SkusList,
     meta: {
       title: "Skus List",
+    },
+  },
+  {
+    path: "/level/list",
+    name: "/level/list",
+    component: LevelList,
+    meta: {
+      title: "Level List",
     },
   },
 ];

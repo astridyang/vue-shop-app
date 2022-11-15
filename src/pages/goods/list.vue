@@ -5,42 +5,45 @@
 
 		</el-tabs>
 		<el-card shadow="never">
-			<el-form class="flex" :model="searchForm" label-width="80px" :inline="false" size="small">
-				<el-form-item label="title">
-					<el-input v-model="searchForm.title" clearable></el-input>
-				</el-form-item>
-				<el-form-item class="ml-auto">
-					<el-button type="primary" @click="getData">Search</el-button>
-					<el-button @click="resetSearchForm">Reset</el-button>
-				</el-form-item>
-			</el-form>
+			<Search :model="searchForm" @search="getData" @reset="resetSearchForm">
+				<SearchItem label="Title">
+					<el-input v-model="searchForm.title" clearable class="w-[150px]"></el-input>
+				</SearchItem>
+				<template #show>
+					<SearchItem label="Category">
+						<el-select v-model="searchForm.category_id" placeholder="Select Category" clearable>
+							<el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id">
+							</el-option>
+						</el-select>
+					</SearchItem>
+				</template>
+			</Search>
 
 			<ListHeader @create="handleCreate" @refresh="getData" layout="create,refresh">
-				<el-button size="small" @click="handleMultiDelete"
-				           v-if="searchForm.tab !== 'delete'">Multi delete
+				<el-button size="small" @click="handleMultiDelete" v-if="searchForm.tab !== 'delete'">Multi delete
 				</el-button>
-				<el-button size="small" type="warning" @click="handleRestoreGoods"
-				           v-if="searchForm.tab === 'delete'">Multi Restore
+				<el-button size="small" type="warning" @click="handleRestoreGoods" v-if="searchForm.tab === 'delete'">Multi
+					Restore
 				</el-button>
 				<el-popconfirm v-if="searchForm.tab === 'delete'" title="Are you sure to delete this?"
-				               @confirm="handleMultiDestroy">
+					@confirm="handleMultiDestroy">
 					<template #reference>
 						<el-button size="small" type="danger">Multi Destroy
 						</el-button>
 					</template>
 				</el-popconfirm>
 				<el-button size="small" @click="handleMultiUpdateStatus(1)"
-				           v-if="searchForm.tab === 'all' || searchForm.tab === 'off'">上架
+					v-if="searchForm.tab === 'all' || searchForm.tab === 'off'">上架
 				</el-button>
 				<el-button size="small" @click="handleMultiUpdateStatus(0)"
-				           v-if="searchForm.tab === 'all' || searchForm.tab === 'saling'">下架
+					v-if="searchForm.tab === 'all' || searchForm.tab === 'saling'">下架
 				</el-button>
 
 			</ListHeader>
 
 			<el-table :data="tableData" stripe style="width: 100%" v-loading="loading"
-			          @selection-change="handleSelectionChange">
-				<el-table-column type="selection" width="55"/>
+				@selection-change="handleSelectionChange">
+				<el-table-column type="selection" width="55" />
 				<el-table-column label="Goods" width="300">
 					<template #default="{ row }">
 						<div class="flex">
@@ -81,17 +84,14 @@
 					<template #default="scope">
 						<div v-if="searchForm.tab !== 'delete'">
 							<el-button size="small" class="px-1" type="primary" @click="handleEdit(scope.row)" text>Edit</el-button>
-							<el-button size="small" class="px-1"
-							           :type="(scope.row.sku_type===0&&!scope.row.sku_value)||(scope.row.sku_type===1&&!scope.row.goods_skus
-.length)?'danger':'primary'" text
-							           @click="handleSetSkus(scope.row)"
-							           :loading="scope.row.skusLoading">Sku
+							<el-button size="small" class="px-1" :type="(scope.row.sku_type === 0 && !scope.row.sku_value) || (scope.row.sku_type === 1 && !scope.row.goods_skus
+							.length) ? 'danger' : 'primary'" text @click="handleSetSkus(scope.row)" :loading="scope.row.skusLoading">Sku
 							</el-button>
-							<el-button size="small" class="px-1" :type="scope.row.goods_banner.length?'primary':'danger'" text
-							           @click="handleSetBanners(scope.row)" :loading="scope.row.bannerLoading">SetBanners
+							<el-button size="small" class="px-1" :type="scope.row.goods_banner.length ? 'primary' : 'danger'" text
+								@click="handleSetBanners(scope.row)" :loading="scope.row.bannerLoading">SetBanners
 							</el-button>
-							<el-button size="small" class="px-1" :type="scope.row.content?'primary':'danger'" text
-							           @click="handleSetContent(scope.row)">Detail
+							<el-button size="small" class="px-1" :type="scope.row.content ? 'primary' : 'danger'" text
+								@click="handleSetContent(scope.row)">Detail
 							</el-button>
 							<el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete([scope.row.id])">
 								<template #reference>
@@ -107,7 +107,7 @@
 
 			<div class="flex items-center justify-center mt-5">
 				<el-pagination @current-change="getData" :current-page="currentPage" :page-size="limit"
-				               layout=" prev,pager, next" background :total="total">
+					layout=" prev,pager, next" background :total="total">
 				</el-pagination>
 			</div>
 
@@ -117,7 +117,7 @@
 						<el-input v-model="form.title"></el-input>
 					</el-form-item>
 					<el-form-item label="cover" prop="cover">
-						<ChooseImage v-model="form.cover"/>
+						<ChooseImage v-model="form.cover" />
 					</el-form-item>
 					<el-form-item label="desc" prop="desc">
 						<el-input v-model="form.desc" type="textarea" rows="5"></el-input>
@@ -168,23 +168,25 @@
 
 			</form-drawer>
 		</el-card>
-		<goods-banners ref="bannerRef" @reload-data="getData"/>
-		<content ref="contentRef" @reload-data="getData"/>
-		<skus ref="skusRef" @reload-data="getData"/>
+		<goods-banners ref="bannerRef" @reload-data="getData" />
+		<content ref="contentRef" @reload-data="getData" />
+		<skus ref="skusRef" @reload-data="getData" />
 	</div>
 </template>
 
 <script>
 export default {
-	components: {goodsBanners, content},
+	components: { goodsBanners, content },
 	name: 'GoodsList'
 }
 </script>
 <script setup>
-import {ref} from 'vue';
+import { ref } from 'vue';
 import FormDrawer from '~/components/FormDrawer.vue';
 import ChooseImage from '~/components/ChooseImage.vue';
 import ListHeader from '~/components/ListHeader.vue';
+import Search from '~/components/Search.vue';
+import SearchItem from '~/components/SearchItem.vue';
 import {
 	getGoodsList,
 	updateStatus,
@@ -194,12 +196,12 @@ import {
 	restoreGoods,
 	destroyGoods
 } from '~/api/goods';
-import {getCategoryList} from '~/api/category'
-import {useInitTable, useInitForm} from '~/composables/useCommon'
+import { getCategoryList } from '~/api/category'
+import { useInitTable, useInitForm } from '~/composables/useCommon'
 import goodsBanners from "~/pages/goods/goodsBanners.vue";
 import content from "~/pages/goods/content.vue";
 import skus from "~/pages/goods/skus.vue";
-import {toast} from "~/composables/util";
+import { toast } from "~/composables/util";
 
 const {
 	searchForm,
@@ -295,7 +297,7 @@ const tabBars = [
 ]
 const categoryList = ref([])
 getCategoryList().then(res => categoryList.value = res)
-
+const showSearch = ref(false)
 const bannerRef = ref(null)
 const handleSetBanners = (row) => {
 	bannerRef.value.open(row)
