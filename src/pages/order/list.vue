@@ -80,14 +80,14 @@
 				</el-table-column>
 				<el-table-column label="Operations">
 					<template #default="scope">
-						<el-button size="small" class="px-1" type="primary" @click="handleEdit(scope.row)" text>Order Detail
+						<el-button size="small" class="px-1" type="primary" @click="openInfo(scope.row)" text>Order Detail
 						</el-button>
 						<el-button v-if="searchForm.tab === 'noship'" size="small" class="px-1" type="primary"
 							@click="handleEdit(scope.row)" text>Ship Order</el-button>
 						<el-button v-if="searchForm.tab === 'refunding'" size="small" class="px-1" type="primary"
-							@click="handleEdit(scope.row)" text>Accept Refund</el-button>
+							@click="handleRefund(scope.row.id, 1)" text>Accept Refund</el-button>
 						<el-button v-if="searchForm.tab === 'refunding'" size="small" class="px-1" type="primary"
-							@click="handleEdit(scope.row)" text>Deny Refund</el-button>
+							@click="handleRefund(scope.row.id, 0)" text>Deny Refund</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -100,6 +100,7 @@
 
 		</el-card>
 		<ExportExcel ref="ExportExcelRef" :tabs="tabBars" />
+		<InfoModal ref="InfoModalRef" />
 	</div>
 </template>
 
@@ -114,14 +115,16 @@ import ListHeader from '~/components/ListHeader.vue';
 import Search from '~/components/Search.vue';
 import SearchItem from '~/components/SearchItem.vue';
 import ExportExcel from './ExportExcel.vue';
+import InfoModal from './InfoModal.vue';
 import {
 	getOrderList,
 	deleteOrder,
+	refundOrder
 } from '~/api/order';
 
 import { useInitTable } from '~/composables/useCommon'
 
-import { toast } from "~/composables/util";
+import { toast, showModel, showPrompt } from "~/composables/util";
 
 const {
 	searchForm,
@@ -196,6 +199,24 @@ const tabBars = [
 const ExportExcelRef = ref(null)
 const handleExportExcel = () => {
 	ExportExcelRef.value.open()
+}
+
+const InfoModalRef = ref(null)
+const openInfo = (row) => {
+	InfoModalRef.value.open(row)
+}
+
+const handleRefund = (id, agree) => {
+	(agree ? showModel("accept this refund?") : showPrompt("reject this refund?")).then(({ value }) => {
+		const data = { agree }
+		if (value) {
+			data.disagree_reason = value
+		}
+		refundOrder(id, data).then(res => {
+			getData();
+			toast("operate success.")
+		})
+	})
 }
 </script>
 

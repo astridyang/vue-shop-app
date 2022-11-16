@@ -11,12 +11,15 @@ import ImageList from "~/pages/image/list.vue";
 import NoticeList from "~/pages/notice/list.vue";
 import OrderList from "~/pages/order/list.vue";
 import SettingBase from "~/pages/setting/base.vue";
+import SetPayment from "~/pages/setting/payment.vue";
+import SetShip from "~/pages/setting/ship.vue";
 import UserList from "~/pages/user/list.vue";
 import ManagerList from "~/pages/manager/list.vue";
 import AccessList from "~/pages/access/list.vue";
 import RoleList from "~/pages/role/list.vue";
 import SkusList from "~/pages/skus/list.vue";
 import LevelList from "~/pages/level/list.vue";
+import Distribution from "~/pages/distribution/index.vue";
 
 const routes = [
   {
@@ -152,6 +155,30 @@ const asyncRoutes = [
     component: LevelList,
     meta: {
       title: "Level List",
+    },
+  },
+  {
+    path: "/setting/buy",
+    name: "/setting/buy",
+    component: SetPayment,
+    meta: {
+      title: "Set Payment",
+    },
+  },
+  {
+    path: "/setting/ship",
+    name: "/setting/ship",
+    component: SetShip,
+    meta: {
+      title: "Set Ship",
+    },
+  },
+  {
+    path: "/distribution/index",
+    name: "/distribution/index",
+    component: Distribution,
+    meta: {
+      title: "Distribution",
     },
   },
 ];
