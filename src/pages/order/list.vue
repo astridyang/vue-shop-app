@@ -17,11 +17,11 @@
 						<el-input v-model="searchForm.phone" clearable class="w-[220px]"></el-input>
 					</SearchItem>
 					<SearchItem label="Start Time">
-						<el-date-picker v-model="searchForm.starttime" type="date" placeholder="Pick a day" :size="size"
+						<el-date-picker v-model="searchForm.starttime" type="date" placeholder="Pick a day"
 							value-format="YYYY-MM-DD" />
 					</SearchItem>
 					<SearchItem label="End Time">
-						<el-date-picker v-model="searchForm.endtime" type="date" placeholder="Pick a day" :size="size"
+						<el-date-picker v-model="searchForm.endtime" type="date" placeholder="Pick a day"
 							value-format="YYYY-MM-DD" />
 					</SearchItem>
 				</template>

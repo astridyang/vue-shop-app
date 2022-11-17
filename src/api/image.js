@@ -12,4 +12,4 @@ export const deleleImages = (ids) => {
   return axios.post("/admin/image/delete_all", { ids });
 };
 
-export const uploadAction = "/api/admin/image/upload"
+export const uploadAction = import.meta.env.VITE_APP_BASE_API + "/admin/image/upload"

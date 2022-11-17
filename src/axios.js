@@ -3,7 +3,7 @@ import { getToken } from "~/composables/auth";
 import { toast } from "~/composables/util";
 import store from "./store";
 const service = axios.create({
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_APP_BASE_API,
 });
 // 添加请求拦截器
 service.interceptors.request.use(

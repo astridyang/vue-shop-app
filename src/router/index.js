@@ -20,6 +20,7 @@ import RoleList from "~/pages/role/list.vue";
 import SkusList from "~/pages/skus/list.vue";
 import LevelList from "~/pages/level/list.vue";
 import Distribution from "~/pages/distribution/index.vue";
+import DistributionSetting from "~/pages/distribution/setting.vue";
 
 const routes = [
   {
@@ -179,6 +180,14 @@ const asyncRoutes = [
     component: Distribution,
     meta: {
       title: "Distribution",
+    },
+  },
+  {
+    path: "/distribution/setting",
+    name: "/distribution/setting",
+    component: DistributionSetting,
+    meta: {
+      title: "Distribution Setting",
     },
   },
 ];

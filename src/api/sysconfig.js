@@ -7,4 +7,4 @@ export function getSysConfig() {
 export function setSysConfig(data) {
   return axios.post(`/admin/sysconfig`, data);
 }
-export const uploadAction = "/api/admin/sysconfig/upload"
+export const uploadAction = import.meta.env.VITE_APP_BASE_API + "/admin/sysconfig/upload"

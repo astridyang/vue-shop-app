@@ -26,7 +26,7 @@
             <Timer v-if="index === 3" />
           </el-icon>
           <div class="ml-2">
-            <p>{{ item.value }}</p>
+            <p class="text-lg font-bold">{{ item.value }}</p>
             <small class="text-gray-500 text-xs">{{ item.label }}</small>
           </div>
         </div>
